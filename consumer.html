@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>슈디바 코칭 챌린지 | 고객 이벤트</title>
+
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --blue:       #12A8DC;
+      --blue-light: #4DC3EC;
+      --black:      #000000;
+      --black3:     #111111;
+      --black4:     #181818;
+      --black5:     #222222;
+      --white:      #FFFFFF;
+      --gray:       #8A9BAA;
+      --gray-light: #C5D4DD;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black3); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    /* ━━━━ NAV ━━━━ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(18,168,220,0.1);
+      transition: background 0.3s;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo i { font-size: 13px; color: var(--white); }
+
+    .nav-brand-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-brand-text span { color: var(--blue); }
+
+    .nav-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(18,168,220,0.1);
+      border: 1px solid rgba(18,168,220,0.38);
+      color: var(--blue-light);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* ━━━━ HERO ━━━━ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 130px 24px 100px;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(18,168,220,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18,168,220,0.055) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 15%, transparent 100%);
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(18,168,220,0.12) 0%, transparent 62%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+
+    .hero-device {
+      position: absolute;
+      right: 3vw;
+      bottom: 0;
+      width: clamp(160px, 20vw, 340px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-device img {
+      width: 100%;
+      display: block;
+      filter: drop-shadow(0 0 56px rgba(18,168,220,0.5));
+      animation: float 4.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    @media (max-width: 1024px) { .hero-device { width: clamp(120px, 14vw, 210px); opacity: 0.55; } }
+    @media (max-width: 600px)  { .hero-device { display: none; } }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(18,168,220,0.1);
+      border: 1px solid rgba(18,168,220,0.42);
+      color: var(--blue-light);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      padding: 7px 20px;
+      border-radius: 100px;
+      margin-bottom: 34px;
+      text-transform: uppercase;
+    }
+
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 5px;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 900;
+      line-height: 1.04;
+      margin-bottom: 24px;
+      letter-spacing: -2.5px;
+      color: var(--white);
+    }
+
+    .hero-title .hl { color: var(--blue); }
+
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--gray-light);
+      line-height: 2;
+      margin-bottom: 56px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 18px 52px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 56px rgba(18,168,220,0.45);
+      border: none;
+      cursor: pointer;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    .hero-cta:hover {
+      background: var(--blue-light);
+      box-shadow: 0 0 80px rgba(18,168,220,0.7);
+      transform: translateY(-3px);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 38px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--gray);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: scrollBounce 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.45; }
+      50%       { transform: translateX(-50%) translateY(8px); opacity: 1; }
+    }
+
+    /* ━━━━ SECTION BASE ━━━━ */
+    section { padding: 100px 24px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.18;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.88;
+    }
+
+    .blue-line {
+      width: 40px; height: 3px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    /* ━━━━ HOW TO JOIN ━━━━ */
+    .steps-section { background: var(--black3); }
+
+    .steps-wrap {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 0 28px;
+      position: relative;
+    }
+
+    .step-row:not(:last-child) .step-line {
+      position: absolute;
+      left: 31px;
+      top: 60px;
+      bottom: -20px;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(18,168,220,0.45), rgba(18,168,220,0.06));
+    }
+
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+
+    .step-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      flex-shrink: 0;
+      box-shadow: 0 0 26px rgba(18,168,220,0.45);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-circle .sc-s {
+      font-size: 7px; font-weight: 800;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+    }
+
+    .step-circle .sc-n {
+      font-size: 19px; font-weight: 900;
+      color: var(--white); line-height: 1;
+    }
+
+    .step-card {
+      background: var(--black4);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 26px 30px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .step-card:hover {
+      border-color: rgba(18,168,220,0.28);
+      box-shadow: 0 10px 36px rgba(0,0,0,0.38);
+    }
+
+    .step-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-card-title i { color: var(--blue); font-size: 15px; }
+
+    .step-card-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.85;
+    }
+
+    /* ━━━━ PRIZES ━━━━ */
+    .prizes-section { background: var(--black); }
+
+    /* 경품 카드 그리드 */
+    .prizes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 52px;
+    }
+
+    .prizes-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      margin-top: 52px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .prizes-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(18,168,220,0.18);
+    }
+
+    .prize-card {
+      background: var(--black4);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.35s, box-shadow 0.35s, border-color 0.3s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prize-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(18,168,220,0.35);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+
+    .prize-card.is-top {
+      border-color: rgba(18,168,220,0.45);
+      background: linear-gradient(148deg, rgba(18,168,220,0.1), var(--black4));
+    }
+
+    .prize-card.is-top::after {
+      content: '1ST PRIZE';
+      position: absolute;
+      top: 14px; right: 14px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 9px;
+      font-weight: 900;
+      padding: 5px 11px;
+      border-radius: 100px;
+      letter-spacing: 1.5px;
+      z-index: 3;
+    }
+
+    .pc-img {
+      width: 100%; height: 200px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      background: var(--black3);
+    }
+
+    .pc-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.65) saturate(0.78);
+      transition: transform 0.55s, filter 0.4s;
+    }
+
+    .pc-img.gift-img img {
+      object-fit: contain;
+      padding: 20px;
+      background: #0d0d0d;
+      filter: brightness(0.95) saturate(0.9);
+    }
+
+    .prize-card:hover .pc-img img { transform: scale(1.07); filter: brightness(0.78) saturate(0.95); }
+    .prize-card:hover .pc-img.gift-img img { transform: scale(1.04); }
+
+    .pc-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+    }
+
+    .pc-body {
+      padding: 20px 22px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pc-rank {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pc-rank::before {
+      content: '';
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .pc-prize {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .pc-detail {
+      font-size: 12.5px;
+      color: var(--gray);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .pc-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      border: 1px solid rgba(18,168,220,0.22);
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 11px;
+      color: var(--blue-light);
+      font-weight: 700;
+      width: fit-content;
+    }
+
+    /* ━━━━ NOTICE ━━━━ */
+    .notice-section {
+      background: var(--black3);
+      padding: 64px 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .notice-box {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--black5);
+      border: 1px solid rgba(18,168,220,0.1);
+      border-radius: 18px;
+      padding: 36px 40px;
+    }
+
+    .notice-head {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notice-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 48px;
+    }
+
+    .notice-list li {
+      font-size: 13px;
+      color: var(--gray);
+      padding-left: 13px;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    .notice-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0.5;
+    }
+
+    /* ━━━━ FOOTER ━━━━ */
+    .footer {
+      background: #0A0A0A;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 36px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .footer-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+
+    .footer-text { font-size: 13px; font-weight: 700; color: var(--gray); }
+
+    .footer-copy { font-size: 12px; color: rgba(138,155,170,0.4); text-align: right; }
+
+    /* ━━━━ REVEAL ━━━━ */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ━━━━ RESPONSIVE ━━━━ */
+    @media (max-width: 600px) {
+      .notice-list { grid-template-columns: 1fr; }
+      .nav { padding: 0 20px; }
+      .notice-box { padding: 28px 22px; }
+      .step-card { padding: 22px 18px; }
+      .footer { flex-direction: column; text-align: center; }
+      .footer-copy { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ━━━━ NAV ━━━━ -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo"><i class="fas fa-bolt"></i></div>
+    <span class="nav-brand-text">SUDIVA <span>CHALLENGE</span></span>
+  </div>
+  <div class="nav-live">
+    <div class="live-dot"></div>
+    EVENT OPEN
+  </div>
+</nav>
+
+<!-- ━━━━ HERO ━━━━ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fas fa-star"></i>
+      슈디바 코칭 챌린지
+    </div>
+
+    <p class="hero-eyebrow">파메스테틱 공식 프로모션</p>
+
+    <h1 class="hero-title">
+      슈디바<br/>
+      <span class="hl">코칭 챌린지</span>
+    </h1>
+
+    <p class="hero-desc">
+      슈디바를 구매하셨다면 지금 바로 참여하세요.<br/>
+      사용법 수강 후 후기 영상만 올리면<br/>
+      까르띠에 팔찌부터 호텔 숙박권까지 드립니다.
+    </p>
+
+    <a href="#prizes" class="hero-cta">
+      <i class="fas fa-gift"></i>
+      경품 확인하기
+    </a>
+  </div>
+
+  <div class="hero-device">
+    <img src="images/sudiva-device-cut.png" alt="슈디바" />
+  </div>
+
+  <div class="scroll-hint">
+    <i class="fas fa-chevron-down"></i>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ━━━━ HOW TO JOIN ━━━━ -->
+<section class="steps-section" id="how">
+  <div class="container">
+
+    <div class="reveal">
+      <p class="section-eyebrow">How to Join</p>
+      <div class="blue-line"></div>
+      <h2 class="section-title">참여 방법</h2>
+      <p class="section-desc">단 두 단계입니다.</p>
+    </div>
+
+    <div class="steps-wrap reveal" style="transition-delay:0.12s">
+
+      <div class="step-row">
+        <div class="step-line"></div>
+        <div class="step-left">
+          <div class="step-circle">
+            <span class="sc-s">STEP</span>
+            <span class="sc-n">01</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card-title">
+            <i class="fas fa-store"></i>
+            구매한 샵에 참여 신청
+          </div>
+          <div class="step-card-desc">
+            슈디바를 구매한 샵에 방문해 코칭 챌린지 참여를 신청하세요.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-left">
+          <div class="step-circle">
+            <span class="sc-s">STEP</span>
+            <span class="sc-n">02</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card-title">
+            <i class="fas fa-video"></i>
+            사용법 수강 후 후기 영상 촬영
+          </div>
+          <div class="step-card-desc">
+            샵에서 슈디바 사용법 코칭을 받고, Before &amp; After 후기 영상을 촬영해 SNS에 업로드하면 완료.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ━━━━ PRIZES ━━━━ -->
+<section class="prizes-section" id="prizes">
+  <div class="container">
+
+    <div class="reveal">
+      <p class="section-eyebrow">Rewards</p>
+      <div class="blue-line"></div>
+      <h2 class="section-title">받을 수 있는 경품</h2>
+      <p class="section-desc">결과가 뛰어난 분은 선정 보상, 참여만 해도 125명 랜덤 추첨 대상입니다.</p>
+    </div>
+
+    <!-- 우수 선정 보상 -->
+    <p class="prizes-label reveal" style="transition-delay:0.08s">
+      Before &amp; After 우수 선정
+      <span style="font-size:11px; color:var(--gray); font-weight:400; letter-spacing:0; text-transform:none;">— 상위 5명</span>
+    </p>
+    <div class="prizes-grid reveal" style="transition-delay:0.14s">
+
+      <div class="prize-card is-top">
+        <div class="pc-img">
+          <img src="images/cartier-love-med-1.jpg" alt="까르띠에 러브 브레이슬릿" />
+        </div>
+        <div class="pc-body">
+          <div class="pc-rank">선정 1위</div>
+          <div class="pc-prize">까르띠에 러브 브레이슬릿 미디엄</div>
+          <div class="pc-detail">LOVE 브레이슬릿 미디엄 (B6081417)<br/>제세공과금 수상자 본인 부담</div>
+          <div class="pc-count"><i class="fas fa-user"></i> 1명</div>
+        </div>
+      </div>
+
+      <div class="prize-card">
+        <div class="pc-img">
+          <img src="images/gold-bar.jpg" alt="순금 골드바" />
+        </div>
+        <div class="pc-body">
+          <div class="pc-rank">선정 2~5위</div>
+          <div class="pc-prize">순금 한 돈 (24K 골드바)</div>
+          <div class="pc-detail">24K 순금 골드바 3.75g</div>
+          <div class="pc-count"><i class="fas fa-users"></i> 4명</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 랜덤 추첨 -->
+    <p class="prizes-label reveal" style="transition-delay:0.08s">
+      SNS 업로드 참여자 랜덤 추첨
+      <span style="font-size:11px; color:var(--gray); font-weight:400; letter-spacing:0; text-transform:none;">— 참여자 전원 대상</span>
+    </p>
+    <div class="prizes-grid reveal" style="transition-delay:0.14s">
+
+      <div class="prize-card">
+        <div class="pc-img">
+          <img src="images/shilla-hotel.jpg" alt="서울신라호텔 숙박권" />
+        </div>
+        <div class="pc-body">
+          <div class="pc-rank">추첨 A</div>
+          <div class="pc-prize">서울신라호텔 숙박권</div>
+          <div class="pc-detail">서울신라호텔 비즈니스 디럭스 1박</div>
+          <div class="pc-count"><i class="fas fa-users"></i> 5명</div>
+        </div>
+      </div>
+
+      <div class="prize-card">
+        <div class="pc-img">
+          <img src="images/signiel-dining.jpg" alt="시그니엘서울 식사권" />
+        </div>
+        <div class="pc-body">
+          <div class="pc-rank">추첨 B</div>
+          <div class="pc-prize">시그니엘서울 2인 식사권</div>
+          <div class="pc-detail">시그니엘서울 다이닝 2인 식사권</div>
+          <div class="pc-count"><i class="fas fa-users"></i> 20명</div>
+        </div>
+      </div>
+
+      <div class="prize-card">
+        <div class="pc-img gift-img">
+          <img src="images/shinsegae-100k.jpg" alt="신세계백화점 상품권" />
+        </div>
+        <div class="pc-body">
+          <div class="pc-rank">추첨 C</div>
+          <div class="pc-prize">신세계백화점 상품권 10만원</div>
+          <div class="pc-detail">신세계백화점 상품권 10만원권</div>
+          <div class="pc-count"><i class="fas fa-users"></i> 100명</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ━━━━ NOTICE ━━━━ -->
+<section class="notice-section">
+  <div class="notice-box reveal">
+    <p class="notice-head"><i class="fas fa-info-circle"></i> 유의사항</p>
+    <ul class="notice-list">
+      <li>파메스테틱에서 슈디바를 구매한 고객만 참여 가능합니다.</li>
+      <li>SNS 게시물은 본인 계정에서 공개 설정으로 업로드해야 합니다.</li>
+      <li>후기 영상 업로드까지 완료해야 추첨 대상에 포함됩니다.</li>
+      <li>선정 1위 수상 시 제세공과금은 수상자 본인이 부담합니다.</li>
+      <li>타인의 동의 없이 영상에 노출하는 것은 절대 금지됩니다.</li>
+      <li>부정 참여가 확인되면 즉시 탈락 처리됩니다.</li>
+      <li>당첨 결과는 파메스테틱 공식 채널을 통해 별도 공지됩니다.</li>
+      <li>본 이벤트 내용은 운영사 정책에 따라 변경될 수 있습니다.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ━━━━ FOOTER ━━━━ -->
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-dot"></div>
+    <span class="footer-text">SUDIVA COACHING CHALLENGE · PAMESTATIK</span>
+  </div>
+  <div class="footer-copy">파메스테틱 공식 소비자 이벤트</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  window.addEventListener('scroll', () => {
+    document.querySelector('.nav').style.background =
+      window.scrollY > 60 ? 'rgba(0,0,0,0.94)' : 'rgba(0,0,0,0.75)';
+  });
+</script>
+
+</body>
+</html>
