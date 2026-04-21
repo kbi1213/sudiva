@@ -456,6 +456,28 @@
       font-weight: 600;
     }
 
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(18,168,220,0.4);
+    }
+
+    .download-btn:hover {
+      background: var(--blue-light);
+      box-shadow: 0 0 30px rgba(18,168,220,0.6);
+      transform: translateY(-2px);
+    }
+
     /* ━━━━ REWARDS ━━━━ */
     .rewards-section { background: var(--black); }
 
@@ -1283,7 +1305,7 @@
           <div class="step-title">코칭 확인서 서명</div>
           <div class="step-desc">슈디바 구매 고객에게 코칭을 진행하고 확인서 서명을 받습니다. 안전한 기기 사용을 위한 필수 과정입니다. (온/오프 양식 제공)</div>
           <div class="step-tip"><i class="fas fa-info-circle"></i> 서명 후 사본 1부는 고객에게 제공</div>
-          <div class="step-tip" style="cursor:pointer;margin-top:8px;background:rgba(18,168,220,0.15);border-color:rgba(18,168,220,0.4);" onclick="window.location.href='슈디바챌린지 동의서.pdf'"><i class="fas fa-file-pdf"></i> 동의서 양식 다운로드</div>
+          <a href="슈디바챌린지 동의서.pdf" download class="download-btn"><i class="fas fa-file-download"></i> 신청 확인서 다운로드</a>
         </div>
       </div>
 
