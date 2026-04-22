@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>코나피딜 신규 라인 런칭 프리뷰행사 - 1안 편집형</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root{
+      --charcoal:#2A2A2A;
+      --burgundy:#B83A3C;
+      --coral:#D98A5B;
+      --mint:#C5D2C8;
+      --blue:#3A86B7;
+      --navy:#2F4E7A;
+      --white:#FFFFFF;
+      --bg:#F8FAF9;
+      --line:#E7ECEA;
+      --yellow:#FFF7D6;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      background:linear-gradient(180deg, #FFFFFF 0%, #F8FAF9 100%);
+      font-family:'Pretendard', sans-serif;
+      color:var(--charcoal);
+    }
+
+    .editor-bar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      padding:12px 14px;
+    }
+
+    .editor-inner{
+      max-width:480px;
+      margin:0 auto;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .guide{
+      font-size:12px;
+      line-height:1.5;
+      color:#555;
+      font-weight:600;
+    }
+
+    .btn-group{display:flex;gap:8px;}
+
+    button{
+      border:none;
+      border-radius:12px;
+      height:38px;
+      padding:0 14px;
+      font-family:'Pretendard', sans-serif;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .btn-save{background:var(--navy);color:#fff;}
+    .btn-reset{background:#eef2f6;color:var(--charcoal);}
+
+    .wrap{
+      width:100%;
+      max-width:480px;
+      margin:0 auto;
+      background:var(--white);
+      min-height:100vh;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.04);
+    }
+
+    .top-bar{display:flex;width:100%;height:8px;}
+    .top-bar span:nth-child(1){flex:1;background:var(--burgundy);}
+    .top-bar span:nth-child(2){flex:1;background:var(--coral);}
+    .top-bar span:nth-child(3){flex:1;background:var(--mint);}
+    .top-bar span:nth-child(4){flex:1;background:var(--blue);}
+    .top-bar span:nth-child(5){flex:1;background:var(--navy);}
+
+    .hero{padding:32px 24px 28px;text-align:center;}
+    .logo{width:220px;max-width:78%;margin:0 auto 24px;display:block;}
+
+    .editable{
+      outline:none;
+      border-radius:10px;
+      transition:background .2s ease, box-shadow .2s ease;
+    }
+
+    .editable:hover,
+    .editable:focus{
+      background:var(--yellow);
+      box-shadow:0 0 0 2px rgba(217,138,91,0.28);
+    }
+
+    .label{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:0.18em;
+      color:var(--burgundy);
+      font-weight:700;
+      margin-bottom:14px;
+      padding:4px 8px;
+    }
+
+    h1{
+      margin:0;
+      font-size:30px;
+      line-height:1.28;
+      font-weight:700;
+      letter-spacing:-0.04em;
+      padding:6px 8px;
+    }
+
+    .subtitle{
+      margin:18px 0 0;
+      font-size:16px;
+      line-height:1.7;
+      color:#555;
+      word-break:keep-all;
+      padding:8px 10px;
+    }
+
+    .divider{width:56px;height:2px;background:var(--mint);margin:28px auto 0;border-radius:999px;}
+    .section{padding:0 24px 28px;}
+
+    .intro{
+      font-size:15px;
+      line-height:1.9;
+      color:#444;
+      word-break:keep-all;
+      text-align:center;
+      padding:10px 12px;
+      border-radius:14px;
+    }
+
+    .section-title{
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.14em;
+      color:var(--burgundy);
+      margin:18px 0 14px;
+      padding:4px 8px;
+    }
+
+    .info-card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px 18px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(47, 78, 122, 0.06);
+    }
+
+    .info-row{padding:14px 0;border-bottom:1px solid var(--line);}
+    .info-row:last-child{border-bottom:none;padding-bottom:0;}
+    .info-row:first-child{padding-top:0;}
+
+    .info-label{
+      display:inline-block;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.08em;
+      color:var(--navy);
+      margin-bottom:8px;
+      padding:3px 6px;
+    }
+
+    .info-value{
+      font-size:15px;
+      line-height:1.75;
+      color:var(--charcoal);
+      word-break:keep-all;
+      padding:8px 10px;
+      border-radius:12px;
+    }
+
+    .timeline{display:flex;flex-direction:column;gap:14px;}
+
+    .timeline-item{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      background:#fff;
+    }
+
+    .timeline-item .part{
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      color:var(--burgundy);
+      margin-bottom:8px;
+      padding:3px 6px;
+    }
+
+    .timeline-item .title{
+      font-size:16px;
+      line-height:1.6;
+      font-weight:600;
+      color:var(--charcoal);
+      word-break:keep-all;
+      padding:8px 10px;
+      border-radius:12px;
+    }
+
+    .experience{
+      background:linear-gradient(135deg, rgba(197,210,200,0.22) 0%, rgba(58,134,183,0.08) 100%);
+      border-radius:22px;
+      padding:22px 18px;
+    }
+
+    .experience ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+    .experience li{position:relative;padding-left:18px;}
+    .experience li::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:10px;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--coral);
+    }
+
+    .experience-text{
+      display:block;
+      font-size:15px;
+      line-height:1.7;
+      color:var(--charcoal);
+      font-weight:500;
+      padding:6px 10px;
+      border-radius:12px;
+    }
+
+    .closing{
+      text-align:center;
+      font-size:16px;
+      line-height:1.8;
+      font-weight:600;
+      color:var(--navy);
+      padding:6px 24px 28px;
+      word-break:keep-all;
+    }
+
+    .closing .editable{display:inline-block;padding:8px 10px;}
+
+    .cta-wrap{padding:0 24px 36px;}
+    .cta{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      min-height:56px;
+      border-radius:16px;
+      text-decoration:none;
+      background:var(--navy);
+      color:#fff;
+      font-size:16px;
+      font-weight:700;
+      letter-spacing:-0.02em;
+      box-shadow:0 12px 24px rgba(47,78,122,0.18);
+      padding:0 16px;
+      text-align:center;
+    }
+
+    .cta.editable:hover,
+    .cta.editable:focus{
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 0 0 2px rgba(217,138,91,0.28), 0 12px 24px rgba(47,78,122,0.18);
+    }
+
+    .footer-bar{display:flex;width:100%;height:10px;margin-top:8px;}
+    .footer-bar span:nth-child(1){flex:1;background:var(--burgundy);}
+    .footer-bar span:nth-child(2){flex:1;background:var(--coral);}
+    .footer-bar span:nth-child(3){flex:1;background:var(--mint);}
+    .footer-bar span:nth-child(4){flex:1;background:var(--blue);}
+    .footer-bar span:nth-child(5){flex:1;background:var(--navy);}
+
+    .hint{
+      max-width:480px;
+      margin:10px auto 30px;
+      padding:0 14px;
+      font-size:12px;
+      line-height:1.6;
+      color:#666;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar"><span></span><span></span><span></span><span></span><span></span></div>
+
+    <section class="hero">
+      <div class="label editable" contenteditable="true" data-key="label">PREVIEW EVENT</div>
+      <h1 class="editable" contenteditable="true" data-key="title">코나피딜 신규 라인<br>런칭 프리뷰행사</h1>
+      <p class="subtitle editable" contenteditable="true" data-key="subtitle">코나피딜의 새로운 브랜드 전략과<br>신규 라인을 가장 먼저 만나보는 시간</p>
+      <div class="divider"></div>
+    </section>
+
+    <section class="section">
+      <div class="intro editable" contenteditable="true" data-key="intro">
+        코나피딜의 새로운 브랜드 전략과 신규 라인 런칭을 사전 공개하는 자리에 초대합니다.<br>
+        이번 행사에서는 신규 브랜드 팝업과 실 제품 체험이 함께 진행되며,<br>
+        코나피딜의 새로운 방향성과 제품 라인을 가장 먼저 만나보실 수 있습니다.
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title editable" contenteditable="true" data-key="infoTitle">EVENT INFO</div>
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-label editable" contenteditable="true" data-key="infoLabel1">행사명</div>
+          <div class="info-value editable" contenteditable="true" data-key="infoValue1">코나피딜 신규 라인 런칭 프리뷰행사</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label editable" contenteditable="true" data-key="infoLabel2">행사일시</div>
+          <div class="info-value editable" contenteditable="true" data-key="infoValue2">5월 8일(목) 오전 10:00 - 12:00</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label editable" contenteditable="true" data-key="infoLabel3">행사내용</div>
+          <div class="info-value editable" contenteditable="true" data-key="infoValue3">코나피딜의 새로운 브랜드 전략과 신규 라인 런칭에 대한 사전 공개 행사<br>신규 브랜드 팝업 및 실 제품 체험 제공</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title editable" contenteditable="true" data-key="timeTitle">TIME TABLE</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="part editable" contenteditable="true" data-key="part1">1부</div>
+          <div class="title editable" contenteditable="true" data-key="part1Title">코나피딜 리브랜드 전략운용 방안</div>
+        </div>
+        <div class="timeline-item">
+          <div class="part editable" contenteditable="true" data-key="part2">2부</div>
+          <div class="title editable" contenteditable="true" data-key="part2Title">코나피딜 신규 라인 공개</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title editable" contenteditable="true" data-key="specialTitle">SPECIAL EXPERIENCE</div>
+      <div class="experience">
+        <ul>
+          <li><span class="experience-text editable" contenteditable="true" data-key="exp1">신규 브랜드 팝업 운영</span></li>
+          <li><span class="experience-text editable" contenteditable="true" data-key="exp2">실 제품 체험 제공</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="closing">
+      <span class="editable" contenteditable="true" data-key="closing">코나피딜의 새로운 시작을<br>가장 먼저 경험해보세요.</span>
+    </div>
+
+    <div class="cta-wrap">
+      <a href="#" class="cta editable" contenteditable="true" data-key="cta">참가신청하기</a>
+    </div>
+
+    <div class="footer-bar"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'conapidil_invite_editable_v1';
+
+    function getEditableNodes(){
+      return document.querySelectorAll('[data-key]');
+    }
+
+    function saveEdits(){
+      const data = {};
+      getEditableNodes().forEach(node => {
+        data[node.dataset.key] = node.innerHTML;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      alert('문구가 저장되었습니다.');
+    }
+
+    function loadEdits(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        getEditableNodes().forEach(node => {
+          if(data[node.dataset.key] !== undefined){
+            node.innerHTML = data[node.dataset.key];
+          }
+        });
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    function resetEdits(){
+      const ok = confirm('편집한 문구를 모두 초기 상태로 되돌릴까요?');
+      if(!ok) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    getEditableNodes().forEach(node => {
+      node.addEventListener('keydown', (e) => {
+        if(e.key === 'Tab'){
+          e.preventDefault();
+          document.execCommand('insertText', false, '    ');
+        }
+      });
+    });
+
+    loadEdits();
+  </script>
+</body>
+</html>
